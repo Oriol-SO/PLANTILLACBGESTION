@@ -1,48 +1,86 @@
 <template>
-  <v-app-bar app :color="bgNavbar" elevate-on-scroll elevation="2" flat rounded>
-    <v-container class="py-0 fill-height" fluid>
-      <v-app-bar-nav-icon>
-        <v-img max-height="40" max-width="40" src="/img/u.png" />
-      </v-app-bar-nav-icon>
-      <v-app-bar-title>{{ appName }}</v-app-bar-title>
+<v-app-bar app :color="bgNavbar" elevation="0">
 
+    <v-toolbar dense elevation="0" style="    background-color: transparent;  color:#fff;">
+     <!--v-img class="ml-10 mr-5" max-height="38" max-width="88" src="/img/cbmediclogo.png" /-->
+      <v-toolbar-title >{{ appName }}</v-toolbar-title>
       <v-spacer></v-spacer>
 
-      <v-btn v-for="(link, i) in linksVerified" :key="i" text :to="link.path">
+      
+          <v-menu
+            v-for="(btn, i) in linksdesplegable" :key="i" 
+            :rounded="rounded"
+             offset-y
+          >
+            <template v-slot:activator="{ attrs, on }">
+              <v-btn
+                color="transparent"
+               
+                elevation="0"
+                class="white--text ma-5 text-capitalize"
+                v-bind="attrs"
+                v-on="on"
+              >
+                {{ btn.name }}
+              </v-btn>
+            </template>
+
+            <v-list>
+              <v-list-item
+                v-for="(link,i ) in btn.links"
+                :key="i"
+                >
+                <v-list-item-title > <v-btn :to="link.path">{{link.name}}</v-btn></v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+      
+
+      <v-btn v-for="(link, i) in linksVerified" :key="i"  plain :to="link.path" color="#fff"  >
         {{ link.name }}
       </v-btn>
 
-      <v-menu v-if="user" bottom min-width="240px" rounded offset-y>
-        <template v-slot:activator="{ on }">
-          <v-btn icon elevation="0" color="transparent" dense x-large v-on="on">
-            <v-avatar color="secondary" size="32">
-              <v-img :src="user.foto_url"></v-img>
-            </v-avatar>
-          </v-btn>
-        </template>
-        <v-card>
-          <v-list-item-content class="justify-center">
-            <div class="mx-auto text-center">
-              <v-avatar color="primary" size="32">
-                <v-img :src="user.foto_url"></v-img>
+        <v-menu v-if="user" bottom min-width="220px" rounded offset-y>
+          <template v-slot:activator="{ on }">
+            <v-btn  icon elevation="0" :color="letra_color" dense x-large v-on="on">
+              <v-avatar  size="42" >
+                <v-icon :color="letra_color">mdi-account</v-icon>
               </v-avatar>
-              <h4 class="text-wrap">{{ user.name }}</h4>
-              <p class="text-caption mt-1">
-                {{ user.email }}
-              </p>
-              <v-divider class="my-3"></v-divider>
-              <v-btn depressed rounded text to="/settings">
-                Editar perfil
-              </v-btn>
-              <v-divider class="my-3"></v-divider>
-              <v-btn depressed rounded text @click="logout">
-                Cerrar sesión
-              </v-btn>
-            </div>
-          </v-list-item-content>
-        </v-card>
-      </v-menu>
-    </v-container>
+            </v-btn>
+          </template> 
+          <v-card>
+            <v-list-item-content >
+              <div style="flex-direction:column;">
+                  <div class="text-center">
+                      <h4 class="text-wrap">{{ user.nombre }}</h4>
+                      <p class="text-caption mt-1">
+                        {{ user.email }}
+                      </p>
+                  </div>     
+                  <v-divider class="my-1"></v-divider>   
+                    <div style="    display: table-caption;">
+                      <!--v-btn depressed rounded text to="/admin">
+                      <v-icon left>mdi-view-dashboard</v-icon>
+                        Dashboard
+                      </v-btn-->
+                
+                      <v-btn depressed rounded text to="/settings">
+                      <v-icon left>mdi-account-box-outline</v-icon>
+                        Perfil
+                      </v-btn>
+                    
+                      <v-btn depressed rounded text @click="logout">
+                      <v-icon left>mdi-logout</v-icon>
+                        Salir
+                      </v-btn>
+                    </div>             
+                
+              </div>
+            </v-list-item-content>
+          </v-card>
+        </v-menu>
+    </v-toolbar>
+
   </v-app-bar>
 </template>
 
@@ -57,7 +95,8 @@ export default {
     // { name: "Iniciar sesión", path: "/login", notUser: true },
     // { name: "Registrarme", path: "/registro", notUser: true },
     //],
-    bgNavbar: "transparent",
+    bgNavbar: "rgb(13 129 225)",
+    colorletra:'#fff',
   }),
 
   computed: {
@@ -68,6 +107,17 @@ export default {
       return [{ name: "Inicio", path: "/home" }];
       //return this.links.filter((link) => !(link.notUser && this.user));
     },
+
+    linksdesplegable: function(){
+      return [
+        {name:'Mantenimiento',
+        links:[
+          {name:'evaluadores', path:'/evaluador'}
+          ]
+        }
+        
+        ];
+    }
   },
 
   mounted() {

@@ -24,6 +24,14 @@ export default [
       { path: 'password', name: 'settings.password', component: page('settings/password.vue') }
     ]
   },
+  {
+    path: '/evaluador',
+    component: page('evaluador/index.vue'),
+    children: [
+      { path: '', redirect: { name: 'dash.evaluador' } },
+      { path: 'lista', name: 'dash.evaluador', component: page('evaluador/listaEvaluadores.vue') }
+    ]
+  },
 
   { path: '*', component: page('errors/404.vue') }
 ]

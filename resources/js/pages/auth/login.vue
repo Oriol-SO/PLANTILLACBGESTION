@@ -8,13 +8,13 @@
         width="380"
       >
         <v-flex>
-          <div class="img rounded-circle mx-auto">
-            <v-img src="/img/u.png" />
+          <div class="img rounded-circle mx-auto py-0" style="width:60%;">
+            <v-img  src="/img/cbmediclogo.png" />
           </div>
         </v-flex>
 
         <v-card-title class="d-block text-center"
-          >{{ appName }}<br />Iniciar sesión</v-card-title
+          >Iniciar sesión</v-card-title
         >
         <v-card-text>
           <v-form
